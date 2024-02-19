@@ -86,15 +86,21 @@ if(IPO_SUPPORTED)
 	)
 endif()
 
-if(FTPD_CLASSIC OR NINTENDO_DS)
+if(FTPD_CLASSIC OR NINTENDO_DS OR NINTENDO_WII OR NINTENDO_GAMECUBE)
 	target_compile_definitions(${FTPD_TARGET} PRIVATE CLASSIC)
 endif()
 
-if(NINTENDO_SWITCH OR NINTENDO_3DS OR NINTENDO_DS)
+if(NINTENDO_SWITCH OR NINTENDO_3DS OR NINTENDO_DS OR NINTENDO_WII OR NINTENDO_GAMECUBE)
 	target_compile_definitions(${FTPD_TARGET} PRIVATE
 		NO_IPV6
 		FTPDCONFIG="/config/${PROJECT_NAME}/${PROJECT_NAME}.cfg"
 	)
+endif()
+
+if(NINTENDO_WII OR NINTENDO_GAMECUBE OR NINTENDO_DS)
+	target_compile_definitions(${FTPD_TARGET} PRIVATE HAVE_MUTEX=1 HAVE_TLS=0)
+else()
+	target_compile_definitions(${FTPD_TARGET} PRIVATE HAVE_MUTEX=1 HAVE_TLS=1)
 endif()
 
 target_sources(${FTPD_TARGET} PRIVATE
@@ -371,6 +377,25 @@ elseif(NINTENDO_DS)
 		SUBTITLE2 "(c) 2025 mtheall"
 		ICON nds/icon.bmp
 	)
+elseif(NINTENDO_WII OR NINTENDO_GAMECUBE)
+
+	target_link_libraries(${FTPD_TARGET} PRIVATE
+		fat
+	)
+
+	if(NINTENDO_GAMECUBE)
+		target_link_libraries(${FTPD_TARGET} PRIVATE
+			bba
+		)
+	endif()
+
+	target_sources(${FTPD_TARGET} PRIVATE
+		source/ogc/platform.cpp
+		source/common/thread.cpp
+	)
+
+	ogc_create_dol(${PROJECT_NAME})
+
 else()
 	find_package(PkgConfig REQUIRED)
 	find_package(glfw3 REQUIRED)

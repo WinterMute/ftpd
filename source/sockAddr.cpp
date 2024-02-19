@@ -27,6 +27,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+#include <cstdio>
 
 #ifdef __3DS__
 static_assert (sizeof (sockaddr_storage) == 0x1c);
@@ -345,6 +346,7 @@ socklen_t SockAddr::size () const
 
 char const *SockAddr::name (char *buffer_, std::size_t size_) const
 {
+	printf("SockAddr::name, m_addr.ss_family=%d, m_addr.sin_addr=%s\n", m_addr.ss_family, inet_ntoa (reinterpret_cast<struct sockaddr_in const *> (&m_addr)->sin_addr));
 	switch (m_addr.ss_family)
 	{
 	case AF_INET:
@@ -370,8 +372,8 @@ char const *SockAddr::name (char *buffer_, std::size_t size_) const
 
 char const *SockAddr::name () const
 {
-#ifdef __NDS__
-	return inet_ntoa (reinterpret_cast<sockaddr_in const *> (&m_addr)->sin_addr);
+#if defined(__NDS__) || defined (__wii__) || defined (__gamecube__)
+	return inet_ntoa (reinterpret_cast<struct sockaddr_in const *> (&m_addr)->sin_addr);
 #else
 #ifdef NO_IPV6
 	thread_local static char buffer[INET_ADDRSTRLEN];
