@@ -85,6 +85,12 @@ private:
 
 	/// \brief Transfer buffersize
 	constexpr static auto XFER_BUFFERSIZE = 8192;
+#elif defined (__wii__) || defined (__gamecube__)
+	/// \brief Response buffer size
+	constexpr static auto RESPONSE_BUFFERSIZE = 8192;
+
+	/// \brief Transfer buffersize
+	constexpr static auto XFER_BUFFERSIZE = 16384;
 #else
 	/// \brief Response buffer size
 	constexpr static auto RESPONSE_BUFFERSIZE = 32768;
