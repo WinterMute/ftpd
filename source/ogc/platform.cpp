@@ -37,11 +37,14 @@
 #include <gccore.h>
 #include <ogc/if_config.h>
 
+#ifdef __wii__
+#include <wiiuse/wpad.h>
+#endif
+
 #include <fat.h>
 
 #include <mutex>
 #include <thread>
-
 
 PrintConsole g_statusConsole;
 PrintConsole g_logConsole;
@@ -78,8 +81,9 @@ bool platform::init ()
 	fatInitDefault ();
 
 	VIDEO_Init();
-	PAD_Init();
-
+#ifdef __wii__
+	WPAD_Init();
+#endif
 	consoleInit (&g_statusConsole);
 	consoleInit (&g_logConsole);
 	consoleInit (&g_sessionConsole);
