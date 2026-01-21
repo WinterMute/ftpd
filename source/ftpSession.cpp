@@ -693,7 +693,7 @@ bool FtpSession::poll (std::vector<UniqueFtpSession> const &sessions_)
 				if (i.revents & (POLLIN | POLLPRI))
 					session->readCommand (i.revents);
 
-				if (i.revents & (POLLERR | POLLHUP))
+				if (i.revents & POLLERR)
 					session->closeCommand ();
 			}
 
@@ -711,7 +711,7 @@ bool FtpSession::poll (std::vector<UniqueFtpSession> const &sessions_)
 					if (i.revents & ~(POLLIN | POLLPRI | POLLOUT))
 						debug ("Data revents 0x%X\n", i.revents);
 
-					if (i.revents & (POLLERR | POLLHUP))
+					if (i.revents & POLLERR)
 					{
 						session->sendResponse ("426 Data connection failed\r\n");
 						session->setState (State::COMMAND, true, true);
@@ -737,7 +737,7 @@ bool FtpSession::poll (std::vector<UniqueFtpSession> const &sessions_)
 						debug ("Data revents 0x%X\n", i.revents);
 
 					// we need to transfer data
-					if (i.revents & (POLLERR | POLLHUP))
+					if (i.revents & POLLERR)
 					{
 						session->sendResponse ("426 Data connection failed\r\n");
 						session->setState (State::COMMAND, true, true);
