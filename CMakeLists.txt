@@ -373,6 +373,7 @@ elseif(NINTENDO_DS)
 
 	target_sources(${FTPD_TARGET} PRIVATE
 		source/nds/platform.cpp
+		source/common/thread.cpp
 	)
 
 	nds_create_rom(${FTPD_TARGET}
