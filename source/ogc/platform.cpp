@@ -104,6 +104,13 @@ bool platform::init ()
 
 bool platform::loop ()
 {
+#ifdef __wii__
+	WPAD_ScanPads();
+
+	u32 pressed = WPAD_ButtonsDown(0);
+
+	if ( pressed & WPAD_BUTTON_HOME ) return false;
+#endif
 	return SYS_MainLoop();
 }
 
