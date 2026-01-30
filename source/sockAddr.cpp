@@ -375,10 +375,13 @@ char const *SockAddr::name () const
 #if defined(__NDS__) || defined (__wii__) || defined (__gamecube__)
 	return inet_ntoa (reinterpret_cast<struct sockaddr_in const *> (&m_addr)->sin_addr);
 #else
+#if HAVE_TLS
+thread_local
+#endif
 #ifdef NO_IPV6
-	thread_local static char buffer[INET_ADDRSTRLEN];
+	static char buffer[INET_ADDRSTRLEN];
 #else
-	thread_local static char buffer[INET6_ADDRSTRLEN];
+	static char buffer[INET6_ADDRSTRLEN];
 #endif
 
 	return name (buffer, sizeof (buffer));
