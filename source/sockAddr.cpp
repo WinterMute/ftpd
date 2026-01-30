@@ -372,7 +372,7 @@ char const *SockAddr::name (char *buffer_, std::size_t size_) const
 
 char const *SockAddr::name () const
 {
-#if defined(__NDS__) || defined (__wii__) || defined (__gamecube__)
+#if defined(__NDS__)
 	return inet_ntoa (reinterpret_cast<struct sockaddr_in const *> (&m_addr)->sin_addr);
 #else
 #if HAVE_TLS
