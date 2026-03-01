@@ -346,7 +346,6 @@ socklen_t SockAddr::size () const
 
 char const *SockAddr::name (char *buffer_, std::size_t size_) const
 {
-	printf("SockAddr::name, m_addr.ss_family=%d, m_addr.sin_addr=%s\n", m_addr.ss_family, inet_ntoa (reinterpret_cast<struct sockaddr_in const *> (&m_addr)->sin_addr));
 	switch (m_addr.ss_family)
 	{
 	case AF_INET:

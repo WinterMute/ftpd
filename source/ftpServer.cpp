@@ -1021,7 +1021,6 @@ void FtpServer::loop ()
 
 		if (rc > 0 && (info.revents & POLLIN))
 		{
-			printf("POLLIN on listen socket\n");
 			auto socket = m_socket->accept ();
 			if (socket)
 			{
